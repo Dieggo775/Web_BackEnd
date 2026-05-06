@@ -77,5 +77,5 @@ app.get('/cidades/estado/:uf', cors(), async function(request, response, next){
 
 // e origatorio para fazer a api aguardando ou escutando novas requisicoes
 app.listen(8080, function(){
-    console.log('API funcionando e aguardando novas requisicoes ....');
+    console.log('API funcionando e aguardando novas requisicoes .....');
 })
