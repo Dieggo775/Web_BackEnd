@@ -90,7 +90,7 @@ const getListCidades = function(siglaEstado){
 //     return jsonCidades;
 // }
 
-module.export = {
+module.exports = {
     getListEstados,
     getListCidades
-}
+};
