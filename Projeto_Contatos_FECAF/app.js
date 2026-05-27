@@ -22,3 +22,21 @@
 * Versão: 1.0
 */
 
+// Import das dependencias
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
+// Criando um objeto do tipo express
+const app = express(); 
+
+app.use((request, response, next) => {
+
+    //configuração de quem poderá acessar a API
+    response.header('Access-Control-Allow-Methods', '*');
+
+    response.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+
+    app.use(cors());
+    next();
+})
