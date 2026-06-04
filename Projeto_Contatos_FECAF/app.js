@@ -28,6 +28,9 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+// Configuração do body-parser para receber os dados no formato JSON
+const bodyParserJSON = bodyParser.json();
+
 // Criando um objeto do tipo express
 const app = express(); 
 
@@ -58,6 +61,18 @@ app.get('/v1/contatos/', cors(), async function(request, response, next){
     }
 })
 
+//Endpoint: POST para inserir um contato no Banco de Dados
+app.post('/v1/contato/', cors(), bodyParserJSON, async function(request, response, next){
+    let dados = request.body;
+    let result = controllerContatos.setNewContato(dados);
+
+    if(result){
+        response.status(201);
+        response.json({"message": "Contato inserido com sucesso"});
+    }else{
+        response.status(400);
+    }
+})
 
 app.listen(8080, function(){
     console.log('API funcionando e aguardando requisições');

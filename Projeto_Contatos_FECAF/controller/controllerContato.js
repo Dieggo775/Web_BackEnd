@@ -25,6 +25,25 @@ const getContatos = async function(){
     }
 }
 
+//insere um contato no BD
+const setNewContato = async function(contato){
+    //Valida os dados do contato
+    if( contato.nome == ''  || contato.nome == undefined || 
+        contato.cpf == ''   || contato.cpf == undefined  ||
+        contato.email == '' || contato.email == undefined
+        )
+        return false;
+    else{
+        //Chama a função da model para inserir o contato no BD
+        let result = contatoDAO.insertContato(contato);
+        if(result)
+            return true;
+        else
+            return false;
+    }    
+}
+
 module.exports = {
-    getContatos
+    getContatos,
+    setNewContato
 };
