@@ -17,12 +17,13 @@
 
 /*
 * Objetivo: API para realizar requisições de contatos da UniFecaf
-* Data: 11/05/2026
+* Data: 04/06/2026
 * Autor: Diego Araujo
 * Versão: 1.0
 */
 
 // Import das dependencias
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -41,7 +42,21 @@ app.use((request, response, next) => {
     next();
 })
 
-//Endpoints
+const controllerContatos = require('./controller/controllerContato.js');
+
+//Endpoint: GET para retornar os contatos do Banco de Dados
+app.get('/v1/contatos/', cors(), async function(request, response, next){
+
+    let dadosContato = await controllerContatos.getContatos();
+
+    if(dadosContato){
+        response.status(200);
+        response.json(dadosContato);
+    }else{
+        response.status(404);
+        response.json({message: 'Nenhum contato encontrado'});
+    }
+})
 
 
 app.listen(8080, function(){

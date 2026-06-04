@@ -7,19 +7,23 @@
 
 //Import do Prisma Client
 const { PrismaClient } = require('@prisma/client');
-
+const { PrismaMariaDb } = require('@prisma/adapter-mariadb');
+require('dotenv').config();
 
 //Instancia do Objeto Prisma Client
-const prisma = new PrismaClient();
+const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
+const prisma = new PrismaClient({ adapter });
 
 const selectAllContatos = async function(){
     
     let sql = 'select * from tbl_contatos';
+    //$queryRawUnSafe() é quando temos um script sql
+    //$queryRaw()
     //Executa no Banco de Dados o script SQL de Select
     let rsContatos = await prisma.$queryRawUnsafe(sql);
 
     if(rsContatos.length > 0)
-        return rsContatos;
+        return rsContatos
     else
         return false;
 }

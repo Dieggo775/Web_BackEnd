@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@prisma/adapter-mariadb": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "body-parser": "^2.2.2",
     "cors": "^2.8.6",
