@@ -40,3 +40,10 @@ app.use((request, response, next) => {
     app.use(cors());
     next();
 })
+
+//Endpoints
+
+
+app.listen(8080, function(){
+    console.log('API funcionando e aguardando requisições');
+})
