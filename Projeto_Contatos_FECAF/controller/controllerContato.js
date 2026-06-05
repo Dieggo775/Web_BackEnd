@@ -35,7 +35,7 @@ const setNewContato = async function(contato){
         return false;
     else{
         //Chama a função da model para inserir o contato no BD
-        let result = contatoDAO.insertContato(contato);
+        let result = await contatoDAO.insertContato(contato);
         if(result)
             return true;
         else
@@ -43,7 +43,30 @@ const setNewContato = async function(contato){
     }    
 }
 
+//atualiza um contato no BD
+const setUpdateContato = async function(contato, idContato){
+    //Valida os dados do contato
+    if( contato.nome == ''  || contato.nome == undefined || 
+        contato.cpf == ''   || contato.cpf == undefined  ||
+        contato.email == '' || contato.email == undefined||
+        idContato == ''    || idContato == undefined
+        )
+        return false;
+    else{
+
+        //Adiciona o id do contato no JSON
+        contato.id = idContato;
+
+        //Chama a função da model para atualizar o contato no BD
+        let result = await contatoDAO.updateContato(contato);
+        if(result)
+            return true;
+        else
+            return false;
+    }    
+}
 module.exports = {
     getContatos,
-    setNewContato
+    setNewContato,
+    setUpdateContato
 };

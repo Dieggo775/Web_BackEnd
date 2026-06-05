@@ -26,29 +26,24 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
-
-// Configuração do body-parser para receber os dados no formato JSON
-const bodyParserJSON = bodyParser.json();
 
 // Criando um objeto do tipo express
-const app = express(); 
+const app = express();
 
-app.use((request, response, next) => {
+app.use(cors());
+app.use(express.json());
 
-    //configuração de quem poderá acessar a API
-    response.header('Access-Control-Allow-Methods', '*');
-
-    response.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-
-    app.use(cors());
-    next();
-})
+app.use((error, request, response, next) => {
+    if (error instanceof SyntaxError && error.status === 400 && 'body' in error) {
+        return response.status(400).json({ message: 'JSON inválido no corpo da requisição.' });
+    }
+    next(error);
+});
 
 const controllerContatos = require('./controller/controllerContato.js');
 
 //Endpoint: GET para retornar os contatos do Banco de Dados
-app.get('/v1/contatos/', cors(), async function(request, response, next){
+app.get('/v1/contatos/', async function(request, response, next){
 
     let dadosContato = await controllerContatos.getContatos();
 
@@ -62,15 +57,32 @@ app.get('/v1/contatos/', cors(), async function(request, response, next){
 })
 
 //Endpoint: POST para inserir um contato no Banco de Dados
-app.post('/v1/contato/', cors(), bodyParserJSON, async function(request, response, next){
+app.post('/v1/contato/', async function(request, response, next){
     let dados = request.body;
-    let result = controllerContatos.setNewContato(dados);
+    let result = await controllerContatos.setNewContato(dados);
 
     if(result){
         response.status(201);
         response.json({"message": "Contato inserido com sucesso"});
     }else{
         response.status(400);
+    }
+})
+
+app.put('/v1/contato/:id', async function(request, response, next){
+
+    //Recebe os dados do contato e o id do contato a ser atualizado
+    let dados = request.body;
+    let id = request.params.id;
+
+    let result = await controllerContatos.setUpdateContato(dados, id);
+
+    if(result){
+        response.status(200);
+        response.json({"message": "Contato atualizado com sucesso"});
+    }else{
+        response.status(400);
+        response.json({"message": "Erro ao atualizar contato"});
     }
 })
 

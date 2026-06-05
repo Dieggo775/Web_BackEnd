@@ -41,7 +41,21 @@ const insertContato = async function(contato){
         return false;
 }
 
+const updateContato = async function(contato){
+    let sql = `update tbl_contatos set nome = '${contato.nome}', cpf = '${contato.cpf}', email = '${contato.email}' where id = ${contato.id}`;
+
+    //$executeRaw()
+    //$executeRawUnsafe()
+    let result = await prisma.$executeRawUnsafe(sql);
+
+    if(result)
+        return true;
+    else
+        return false;
+}
+
 module.exports = {
     selectAllContatos,
-    insertContato
+    insertContato,
+    updateContato
 };
