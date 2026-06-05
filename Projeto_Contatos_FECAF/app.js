@@ -56,6 +56,21 @@ app.get('/v1/contatos/', async function(request, response, next){
     }
 })
 
+//Endpoint: GET para retornar os contatos do Banco de Dados por nome
+app.get('/v1/contato', cors(), async function(request, response, next){
+    let nomeContato = request.query.nome;
+
+    let dadosContato = await controllerContatos.getContatosByName(nomeContato);
+
+    if(dadosContato){
+        response.status(200);
+        response.json(dadosContato);
+    }else{
+        response.status(404);
+        response.json({message: 'Nenhum contato encontrado'});
+    }
+})
+
 //Endpoint: POST para inserir um contato no Banco de Dados
 app.post('/v1/contato/', async function(request, response, next){
     let dados = request.body;
@@ -83,6 +98,19 @@ app.put('/v1/contato/:id', async function(request, response, next){
     }else{
         response.status(400);
         response.json({"message": "Erro ao atualizar contato"});
+    }
+})
+
+app.delete('/v1/contato/:id', cors(), async function(request, response, next){
+    let id = request.params.id;
+    let result = controllerContatos.setDeleteContato(id);
+
+    if(result){
+        response.status(204);
+        response.json({"message": "Contato deletado com sucesso"});
+    }else{
+        response.status(400);
+        response.json({"message": "Erro ao deletar contato"});
     }
 })
 

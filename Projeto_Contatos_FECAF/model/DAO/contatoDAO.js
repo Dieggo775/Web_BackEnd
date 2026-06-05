@@ -28,6 +28,20 @@ const selectAllContatos = async function(){
         return false;
 }
 
+const selectByNameContato = async function(nomeContato){
+    
+    let sql = `select * from tbl_contatos where nome like '%${nomeContato}%'`;
+    //$queryRawUnSafe() é quando temos um script sql
+    //$queryRaw()
+    //Executa no Banco de Dados o script SQL de Select
+    let rsContatos = await prisma.$queryRawUnsafe(sql);
+
+    if(rsContatos.length > 0)
+        return rsContatos
+    else
+        return false;
+}
+
 const insertContato = async function(contato){
     let sql = `insert into tbl_contatos (nome, cpf, email) values('${contato.nome}', '${contato.cpf}', '${contato.email}')`;
 
@@ -54,8 +68,23 @@ const updateContato = async function(contato){
         return false;
 }
 
+const deleteContato = async function(id){
+    let sql = `delete from tbl_contatos where id = ${id}`;
+
+    //$executeRaw()
+    //$executeRawUnsafe()
+    let result = await prisma.$executeRawUnsafe(sql);
+
+    if(result)
+        return true;
+    else
+        return false;
+}
+
 module.exports = {
     selectAllContatos,
     insertContato,
-    updateContato
+    updateContato,
+    deleteContato,
+    selectByNameContato
 };

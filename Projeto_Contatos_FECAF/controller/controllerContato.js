@@ -25,6 +25,21 @@ const getContatos = async function(){
     }
 }
 
+const getContatosByName = async function(nomeContato){
+    //Cria um objeto do tipo json
+    let jsonContatos = {};
+    //solicita os dados do Banco de Dados na Model
+    let dadosContatos = await contatoDAO.selectByNameContato(nomeContato);
+    //Valida o retorno dos Dados
+    if(dadosContatos){
+        jsonContatos.count = dadosContatos.length;
+        jsonContatos.contatos = dadosContatos;
+        return jsonContatos;
+    }else{
+        return false;
+    }
+}
+
 //insere um contato no BD
 const setNewContato = async function(contato){
     //Valida os dados do contato
@@ -65,8 +80,25 @@ const setUpdateContato = async function(contato, idContato){
             return false;
     }    
 }
+
+//deleta um contato no BD
+const setDeleteContato = async function(id){
+
+    if (id == '' || id == undefined)
+        return false;
+    else{
+        let result = await contatoDAO.deleteContato(id);
+        if(result)
+            return true;
+        else
+            return false;
+    }
+}
+
 module.exports = {
     getContatos,
     setNewContato,
-    setUpdateContato
+    setUpdateContato,
+    setDeleteContato,
+    getContatosByName
 };
