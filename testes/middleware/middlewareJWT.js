@@ -22,11 +22,11 @@ const createJWT = async (payload) => {
         //SECRET: chave secreta para garantir a segurança do token (deve ser mantida em sigilo)
         //EXPIRES: tempo de expiração do token (em segundos), após esse tempo o token não será mais válido
     const token = jwt.sign({userID: payload}, SECRET, {expiresIn: EXPIRES})
-    
+
     return token;
 }
 
 //Validação do token JWT (recebe o token para validação)
 const validateJWT = async (token) => {
-
+    
 }
